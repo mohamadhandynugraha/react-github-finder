@@ -83,6 +83,10 @@ img {
   color: var(--success-color);
 }
 
+.text-blue {
+  color: var(--blue-color);
+}
+
 .text-danger {
   color: var(--danger-color);
 }
