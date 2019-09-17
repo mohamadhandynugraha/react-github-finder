@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
 import swal from 'sweetalert';
-import PropTypes from 'prop-types';
 import GithubContext from '../../context/github/githubContext';
 
-const Search = ({ showClear, clearUser }) => {
+const Search = () => {
 	const githubContext = useContext(GithubContext);
 	// state = {
 	// 	text: ''
@@ -29,18 +28,13 @@ const Search = ({ showClear, clearUser }) => {
 				<input type="text" name="text" placeholder="Search Users..." value={text} onChange={onChange} />
 				<input type="submit" className="btn-dark btn-block" value="Search" />
 			</form>
-			{showClear && (
-				<button className="btn btn-light btn-block" onClick={clearUser}>
+			{githubContext.users.length > 0 && (
+				<button className="btn btn-light btn-block" onClick={githubContext.clearUsers}>
 					Clear
 				</button>
 			)}
 		</div>
 	);
-};
-
-Search.propTypes = {
-	clearUser: PropTypes.func.isRequired,
-	showClear: PropTypes.bool.isRequired
 };
 
 export default Search;

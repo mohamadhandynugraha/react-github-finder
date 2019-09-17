@@ -10,28 +10,8 @@ import User from './components/user/User';
 import GithubState from './context/github/GithubState';
 
 const App = () => {
-	const [ users, setUsers ] = useState([]);
-	const [ user, setUser ] = useState({});
 	const [ repos, setRepos ] = useState([]);
 	const [ loading, setLoading ] = useState(false);
-
-	// the above code, mimicking this state
-	// state = {
-	// 	users: [],
-	// 	user: {},
-	// 	repos: [],
-	// 	loading: false
-	// };
-
-	// get single github user
-	const getUser = async (username) => {
-		setLoading(true);
-		const url = `https://api.github.com/users/${username}?client_id=${process.env
-			.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
-		const response = await axios.get(url);
-		setUser(response.data);
-		setLoading(false);
-	};
 
 	// get User repos
 	const getUserRepos = async (username) => {
@@ -42,13 +22,6 @@ const App = () => {
 		setRepos(response.data);
 		setLoading(false);
 	};
-
-	const clearUser = () => {
-		setUsers([]);
-		setLoading(false);
-	};
-
-	
 
 	return (
 		<GithubState>
@@ -62,11 +35,8 @@ const App = () => {
 								path="/"
 								render={(props) => (
 									<Fragment>
-										<Search
-											clearUser={clearUser}
-											showClear={users.length > 0 ? true : false}
-										/>
-										<Users loading={loading} users={users} />
+										<Search />
+										<Users  />
 									</Fragment>
 								)}
 							/>
@@ -77,8 +47,6 @@ const App = () => {
 								render={(props) => (
 									<User
 										{...props}
-										getUser={getUser}
-										user={user}
 										loading={loading}
 										repos={repos}
 										getUserRepos={getUserRepos}

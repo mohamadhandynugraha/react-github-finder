@@ -1,15 +1,19 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useContext } from 'react';
 import Spinner from '../layout/Spinner.component';
 import Repos from '../repos/Repos';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
-const User = ({ user, loading, match, getUserRepos, getUser, repos }) => {
+const User = ({ match, getUserRepos, repos }) => {
+	const githubContext = useContext(GithubContext);
+	const { getUser, loading, user } = githubContext;
 	useEffect(() => {
 		getUser(match.params.login);
 		getUserRepos(match.params.login);
 		// eslint-disable-next-line
 	}, []); // mimic behaviour componentDidMount, run once. komen diatas berguna untuk hilangin warning
+
 	const {
 		name,
 		avatar_url,
@@ -91,9 +95,7 @@ const User = ({ user, loading, match, getUserRepos, getUser, repos }) => {
 };
 
 User.propTypes = {
-	loading: PropTypes.bool,
 	repos: PropTypes.array.isRequired,
-	getUser: PropTypes.func.isRequired,
 	getUserRepos: PropTypes.func.isRequired
 };
 
