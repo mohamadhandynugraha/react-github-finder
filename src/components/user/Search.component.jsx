@@ -1,47 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import swal from 'sweetalert';
+import PropTypes from 'prop-types';
 
-class Search extends Component {
-	state = {
-		text: ''
-	};
+const Search = ({ searchUser, showClear, clearUser }) => {
+	// state = {
+	// 	text: ''
+	// }; sama kayak di bawah kodingannya.
+	const [ text, setText ] = useState('');
 
-	onSubmit = (e) => {
+	const onSubmit = (e) => {
 		e.preventDefault();
-		if (this.state.text === '') {
+		if (text === '') {
 			swal('Data input masih kosong', '', 'error');
 		} else {
-			this.props.searchUser(this.state.text);
-			this.setState({ text: '' });
+			searchUser(text);
+			setText('');
 		}
 	};
 
-	onChange = (e) => {
-		this.setState({ [e.target.name]: e.target.value });
+	const onChange = (e) => {
+		setText(e.target.value);
 	};
+	return (
+		<div>
+			<form onSubmit={onSubmit} className="form">
+				<input type="text" name="text" placeholder="Search Users..." value={text} onChange={onChange} />
+				<input type="submit" className="btn-dark btn-block" value="Search" />
+			</form>
+			{showClear && (
+				<button className="btn btn-light btn-block" onClick={clearUser}>
+					Clear
+				</button>
+			)}
+		</div>
+	);
+};
 
-	render() {
-		const { clearUser, showClear } = this.props;
-		return (
-			<div>
-				<form onSubmit={this.onSubmit} className="form">
-					<input
-						type="text"
-						name="text"
-						placeholder="Search Users..."
-						value={this.state.text}
-						onChange={this.onChange}
-					/>
-					<input type="submit" className="btn-dark btn-block" value="Search" />
-				</form>
-				{showClear && (
-					<button className="btn btn-light btn-block" onClick={clearUser}>
-						Clear
-					</button>
-				)}
-			</div>
-		);
-	}
-}
+Search.propTypes = {
+	clearUser: PropTypes.func.isRequired,
+	searchUser: PropTypes.func.isRequired,
+	showClear: PropTypes.bool.isRequired
+};
 
 export default Search;
