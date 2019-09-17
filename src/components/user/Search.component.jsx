@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import swal from 'sweetalert';
 import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
-const Search = ({ searchUser, showClear, clearUser }) => {
+const Search = ({ showClear, clearUser }) => {
+	const githubContext = useContext(GithubContext);
 	// state = {
 	// 	text: ''
 	// }; sama kayak di bawah kodingannya.
@@ -13,7 +15,7 @@ const Search = ({ searchUser, showClear, clearUser }) => {
 		if (text === '') {
 			swal('Data input masih kosong', '', 'error');
 		} else {
-			searchUser(text);
+			githubContext.searchUsers(text);
 			setText('');
 		}
 	};
@@ -38,7 +40,6 @@ const Search = ({ searchUser, showClear, clearUser }) => {
 
 Search.propTypes = {
 	clearUser: PropTypes.func.isRequired,
-	searchUser: PropTypes.func.isRequired,
 	showClear: PropTypes.bool.isRequired
 };
 

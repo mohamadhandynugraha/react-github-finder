@@ -7,12 +7,13 @@ import Users from './components/user/Users.component';
 import Search from './components/user/Search.component';
 import About from './components/pages/About';
 import User from './components/user/User';
+import GithubState from './context/github/GithubState';
 
 const App = () => {
-	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState({});
-	const [repos, setRepos] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [ users, setUsers ] = useState([]);
+	const [ user, setUser ] = useState({});
+	const [ repos, setRepos ] = useState([]);
+	const [ loading, setLoading ] = useState(false);
 
 	// the above code, mimicking this state
 	// state = {
@@ -40,7 +41,6 @@ const App = () => {
 		const response = await axios.get(url);
 		setRepos(response.data);
 		setLoading(false);
-		
 	};
 
 	const clearUser = () => {
@@ -48,18 +48,10 @@ const App = () => {
 		setLoading(false);
 	};
 
-	const searchUser = async (text) => {
-		setLoading(true);
-		const url = `https://api.github.com/search/users?q=${text}&client_id=${process.env
-			.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
-		console.log(url);
-		const response = await axios.get(url);
-		setUsers(response.data.items);
-		setLoading(false);
-	};
+	
 
-		
-		return (
+	return (
+		<GithubState>
 			<Router>
 				<div className="App">
 					<Navbar />
@@ -71,7 +63,6 @@ const App = () => {
 								render={(props) => (
 									<Fragment>
 										<Search
-											searchUser={searchUser}
 											clearUser={clearUser}
 											showClear={users.length > 0 ? true : false}
 										/>
@@ -98,7 +89,8 @@ const App = () => {
 					</div>
 				</div>
 			</Router>
-		);
-	}
+		</GithubState>
+	);
+};
 
 export default App;
